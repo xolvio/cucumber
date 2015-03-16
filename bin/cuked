@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+var Cuked = require('../lib/cuked.js');
+var minimist = require('minimist');
+
+var argv = minimist(process.argv.slice(2), {
+  'default': {
+    "browser": "phantomjs",
+    "platform": "ANY",
+    "name": "",
+    "tags": [],
+    "debug": false,
+    "host": "localhost",
+    "port": "4444",
+    "path": "features",
+    "user": "",
+    "key": "",
+    "log": "silent",
+    "ddp_host": "localhost",
+    "ddp_port": "3000"
+  },
+  'boolean': true
+});
+
+try {
+  var cuked = new Cuked(argv);
+  cuked.run(function(err) {
+    if (err) {
+      process.exit(2);
+    }
+    else {
+      process.exit(0);
+    }
+  });
+} catch (ex) {
+  process.stderr.write(ex.stack + '\n');
+  process.exit(2);
+}
